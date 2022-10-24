@@ -8,8 +8,8 @@ import {
   where,
   doc,
   addDoc,
-} from "firebase/firestore/lite";
-import { onSnapshot } from "firebase/firestore";
+  onSnapshot,
+} from "firebase/firestore";
 
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
@@ -41,7 +41,6 @@ function PlansScreen() {
   }, []);
 
   const loadCheckout = async (priceId) => {
-    console.log(priceId);
     const docRef = await addDoc(
       collection(
         doc(collection(db, "customers"), user.uid),
@@ -53,7 +52,7 @@ function PlansScreen() {
         cancel_url: window.location.origin,
       }
     );
-
+    console.log(docRef);
     onSnapshot(docRef, async (snap) => {
       const { error, sessionId } = snap.data();
 
