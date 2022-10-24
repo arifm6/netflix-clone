@@ -17,7 +17,6 @@ export default function Banner() {
     }
     fetchData();
   }, []);
-  console.log(movie);
 
   function truncate(string, numOfChars) {
     return string?.length > numOfChars

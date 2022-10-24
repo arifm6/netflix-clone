@@ -5,17 +5,20 @@ import LoginScreen from "./screens/LoginScreen";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
-
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout, selectUser } from "./features/userSlice";
+import ProfileScreen from "./screens/ProfileScreen";
 function App() {
-  const user = null;
+  const user = useSelector(selectUser);
 
+  const dispatch = useDispatch();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (userAuth) => {
       if (userAuth) {
-        console.log(userAuth);
+        dispatch(login({ uid: userAuth.uid, email: userAuth.email }));
         //Logged In
       } else {
-        console.log("You are not logged in");
+        dispatch(logout());
         //Logged out
       }
     });
@@ -30,6 +33,7 @@ function App() {
           <LoginScreen />
         ) : (
           <Routes>
+            <Route path="/profile" element={<ProfileScreen />} />
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         )}
